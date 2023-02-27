@@ -8,11 +8,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<<<<<<< Updated upstream
-<AnchorPane prefHeight="437.0" prefWidth="877.0" styleClass="bg" stylesheets="@../styles/landing.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.saklam.pos.LandingController">
-=======
+
+
 <AnchorPane prefHeight="437.0" prefWidth="877.0" styleClass="bg" stylesheets="@../styles/landing.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.saklam.pos.LandingController">
->>>>>>> Stashed changes
+
    <children>
       <Pane layoutX="215.0" layoutY="39.0" prefHeight="359.0" prefWidth="500.0" styleClass="mform" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="215.0" AnchorPane.rightAnchor="162.0" AnchorPane.topAnchor="39.0">
          <children>
@@ -26,10 +25,10 @@
                   <Image url="@../Images/icons8_ibooks_150px.png" />
                </image>
             </ImageView>
-<<<<<<< Updated upstream
+
             <Button fx:id="btnLogin" layoutX="162.0" layoutY="196.0" mnemonicParsing="false" onAction="#goToLogin" prefHeight="44.0" prefWidth="241.0" styleClass="btn" stylesheets="@../styles/landing.css" text="Login" textFill="#ae3f96" />
             <Button fx:id="btnRegister" layoutX="432.0" layoutY="196.0" mnemonicParsing="false" onAction="#goToRegister" prefHeight="44.0" prefWidth="241.0" styleClass="btn" stylesheets="@../styles/landing.css" text="Register" textFill="#a4539a" />
-=======
+
             <Button layoutX="52.0" layoutY="180.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="176.0" styleClass="btn" stylesheets="@../styles/landing.css" text="LOGIN" textFill="#e81ebf">
                <font>
                   <Font size="14.0" />
@@ -38,7 +37,7 @@
                <font>
                   <Font size="14.0" />
                </font></Button>
->>>>>>> Stashed changes
+
          </children>
       </Pane>
    </children>
