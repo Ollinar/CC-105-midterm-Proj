@@ -6,9 +6,11 @@ package org.saklam.pos;
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -78,6 +80,9 @@ public class RegistrationController implements Initializable {
         Alert alrt = new Alert(Alert.AlertType.NONE, "", new ButtonType("Try Again"));
         final String INVALID_INPUT = "Invalid Input";
         Boolean invalidInp = false;
+        Connection conn;
+        PreparedStatement statement;
+        ResultSet result;
         if (txtFName.getText().isBlank()) {
             invalidInp = true;
             alrt.setTitle(INVALID_INPUT);
@@ -93,6 +98,7 @@ public class RegistrationController implements Initializable {
             alrt.setTitle(INVALID_INPUT);
             alrt.setContentText(alrt.getContentText() + "Missing Middle Name\n");
         }
+
         if (txtEmail.getText().isBlank()) {
             invalidInp = true;
             alrt.setTitle(INVALID_INPUT);
@@ -102,16 +108,42 @@ public class RegistrationController implements Initializable {
             alrt.setTitle(INVALID_INPUT);
             alrt.setContentText(alrt.getContentText() + "Invalid Email format(Should have '@')\n");
         }
+        //validates email, Making sure its not taken
+        try {
+            conn = Main.connect(Main.url);
+            statement = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
+            statement.setString(1, txtEmail.getText());
+            result = statement.executeQuery();
+            if (result.next()) {
+                invalidInp = true;
+                alrt.setTitle(INVALID_INPUT);
+                alrt.setContentText(alrt.getContentText() + "Invalid Email, Email Already Taken\n");
+                
+                //closing resources
+                result.close();
+                statement.closeOnCompletion();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         if (txtUsername.getText().isBlank()) {
             invalidInp = true;
             alrt.setTitle(INVALID_INPUT);
             alrt.setContentText(alrt.getContentText() + "Missing Username\n");
         }
+
         if (txtPass.getText().isBlank()) {
             invalidInp = true;
             alrt.setTitle(INVALID_INPUT);
             alrt.setContentText(alrt.getContentText() + "Missing Password\n");
+        } else if (txtPass.getText().length() <= 8) {
+            invalidInp = true;
+            alrt.setTitle(INVALID_INPUT);
+            alrt.setContentText(alrt.getContentText() + "Invalid Password(Needs to be atleast 8 characters)\n");
         }
+
         if (!rdoEmp.isSelected() && !rdoAdmin.isSelected()) {
             invalidInp = true;
             alrt.setTitle(INVALID_INPUT);
@@ -121,8 +153,7 @@ public class RegistrationController implements Initializable {
             alrt.show();
             return;
         }
-        Connection conn;
-        PreparedStatement statement;
+
         try {
             conn = Main.connect(Main.url);
             statement = conn.prepareStatement("Insert INTO users (fName, lName, mName, email, userName, userPass, userType) VALUES(?,?,?,?,?,?,?)");
@@ -163,6 +194,17 @@ public class RegistrationController implements Initializable {
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    @FXML
+    private void cancel(ActionEvent event) {
+        try {
+            App.setRoot("Landing");
+
+        } catch (IOException ex) {
+            Logger.getLogger(LandingController.class.getName()).log(Level.SEVERE, null, ex);
+            new Alert(Alert.AlertType.ERROR, "Failed to load window!").show();
+        }
     }
 
 }

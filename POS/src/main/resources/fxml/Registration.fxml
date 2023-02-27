@@ -80,7 +80,7 @@
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <Button fx:id="btnCancel" layoutX="490.0" layoutY="398.0" mnemonicParsing="false" styleClass="test" stylesheets="@registration.css" text="Cancel">
+      <Button fx:id="btnCancel" layoutX="490.0" layoutY="398.0" mnemonicParsing="false" onAction="#cancel" styleClass="test" stylesheets="@registration.css" text="Cancel">
          <font>
             <Font name="Segoe UI" size="12.0" />
          </font>

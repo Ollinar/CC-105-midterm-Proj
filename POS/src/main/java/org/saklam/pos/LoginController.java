@@ -6,6 +6,7 @@ package org.saklam.pos;
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,6 +48,13 @@ public class LoginController implements Initializable {
 
     @FXML
     private void cancel(ActionEvent event) {
+        try {
+            App.setRoot("Landing");
+
+        } catch (IOException ex) {
+            Logger.getLogger(LandingController.class.getName()).log(Level.SEVERE, null, ex);
+            new Alert(Alert.AlertType.ERROR,"Failed to load window!").show();
+        }
     }
 
     @FXML
@@ -79,9 +87,10 @@ public class LoginController implements Initializable {
                 Boolean matched = argonHasher.verify(hashedPass, txtPass.getText().toCharArray());
                 if(Boolean.TRUE.equals(matched)){
                     //give the appropreiate window
-                    new Alert(Alert.AlertType.INFORMATION,"Login Success");
+                    new Alert(Alert.AlertType.INFORMATION,"Login Success").show();
                     if(result.getString("userType").equals("Admin")){
                         //give admin window
+                        App.setRoot("Admin");
                     }else{
                         //give the employee window
                     }
@@ -100,6 +109,9 @@ public class LoginController implements Initializable {
             
         } catch (SQLException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            new Alert(Alert.AlertType.ERROR,"Failed to load window!").show();
         }
         
         
