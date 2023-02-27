@@ -1,0 +1,30 @@
+/*
+ * Empty Stylesheet file.
+ */
+.bg{
+    -fx-background-image: url(../Images/B.jpg);
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-width: 100%;
+}
+.mainFxmlClass {
+    -fx-background-color: #ba5bb2;
+}
+.mpane{
+    -fx-background-color: #edd8e4;
+    -fx-border-color:white;
+}
+.lgbtn {
+  -fx-background-color: pink;
+  -fx-border-color:white;
+   
+}
+.btns{
+   -fx-background-color: #bd6a99;
+  -fx-border-color:white;
+  
+}
+.btn2{
+    -fx-background-color: pink;
+  -fx-border-color:white;
+}

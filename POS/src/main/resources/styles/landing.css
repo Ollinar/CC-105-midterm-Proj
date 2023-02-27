@@ -2,13 +2,19 @@
  * Empty Stylesheet file.
  */
 .bg{
-    -fx-background-image: url(../Images/B.jpg);
+    -fx-background-image: url(../Images/b3.jpg);
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover;
     -fx-width: 100%;
 }
 .mform{
     -fx-background: transparent;
-    -fx-border-color:purple;
+    -fx-border-color:white;
     -fx-border-radius: 25px;
+}
+.btn{
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-color:#e8276e;
+    -fx-border-radius: 50px;
+
 }
