@@ -1,0 +1,6 @@
+#ancWindow{
+    -fx-background-color: rgb(178,126,178);
+}
+.lblField{
+    -fx-color: red;
+}

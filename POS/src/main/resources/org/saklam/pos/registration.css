@@ -1,9 +1,0 @@
-#ancWindow{
-    -fx-background-color: rgb(178,126,178);
-}
-#lblRegister{
-    -fx-font-family: Yu Gothic UI;
-    -fx-font-size:calc(24);
-    -fx-font-weight: bold;
-    
-}

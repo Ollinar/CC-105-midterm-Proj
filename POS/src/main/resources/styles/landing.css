@@ -1,0 +1,14 @@
+/*
+ * Empty Stylesheet file.
+ */
+.bg{
+    -fx-background-image: url(../Images/B.jpg);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-width: 100%;
+}
+.mform{
+    -fx-background: transparent;
+    -fx-border-color:purple;
+    -fx-border-radius: 25px;
+}
