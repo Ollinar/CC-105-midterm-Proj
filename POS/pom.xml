@@ -28,7 +28,19 @@
             <version>10.14.2.0</version>
             
         </dependency>
-
+        <dependency>
+            <groupId>de.mkammerer</groupId>
+            <artifactId>argon2-jvm</artifactId>
+            <version>2.11</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>de.mkammerer</groupId>
+            <artifactId>argon2-jvm-runner</artifactId>
+            <version>2.11</version>
+            <type>jar</type>
+        </dependency>
+        
 
 
     </dependencies>

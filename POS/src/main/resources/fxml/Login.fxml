@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="ancWindow" prefHeight="436.0" prefWidth="877.0" stylesheets="@../styles/Login.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="org.saklam.pos.LoginController">
+<AnchorPane id="AnchorPane" fx:id="ancWindow" prefHeight="436.0" prefWidth="877.0" stylesheets="@../styles/Login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.saklam.pos.LoginController">
    <children>
       <Pane id="leftPane" prefHeight="437.0" prefWidth="297.0" stylesheets="@../styles/Login.css">
          <children>
@@ -36,7 +36,7 @@
                </image>
             </ImageView>
             <TextField layoutX="187.0" layoutY="159.0" prefHeight="32.0" prefWidth="246.0" styleClass="field" stylesheets="@../styles/Login.css" />
-            <TextField layoutX="186.0" layoutY="159.0" prefHeight="32.0" prefWidth="238.0" styleClass="field" stylesheets="@../styles/Login.css" />
+            <TextField fx:id="txtEmail" layoutX="186.0" layoutY="159.0" prefHeight="32.0" prefWidth="238.0" styleClass="field" stylesheets="@../styles/Login.css" />
             <Separator layoutX="186.0" layoutY="193.0" prefHeight="3.0" prefWidth="238.0" />
             <ImageView fitHeight="32.0" fitWidth="52.0" layoutX="142.0" layoutY="162.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -48,10 +48,10 @@
                   <Image url="@../Images/icons8_password_key_50px.png" />
                </image>
             </ImageView>
-            <PasswordField layoutX="186.0" layoutY="227.0" prefHeight="43.0" prefWidth="238.0" styleClass="field" stylesheets="@../styles/Login.css" />
+            <PasswordField fx:id="txtPass" layoutX="186.0" layoutY="227.0" prefHeight="43.0" prefWidth="238.0" styleClass="field" stylesheets="@../styles/Login.css" />
             <Separator layoutX="186.0" layoutY="269.0" prefHeight="3.0" prefWidth="238.0" />
-            <Button layoutX="186.0" layoutY="309.0" mnemonicParsing="false" text="Cancel" textFill="#933885" />
-            <Button layoutX="366.0" layoutY="309.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="51.0" text="Login" textFill="#933885" />
+            <Button layoutX="186.0" layoutY="309.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" textFill="#933885" />
+            <Button layoutX="366.0" layoutY="309.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="51.0" text="Login" textFill="#933885" />
             <Circle fill="#eac0e8" layoutX="70.0" layoutY="437.0" radius="67.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fill="#eac0e8" layoutX="45.0" layoutY="379.0" radius="31.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle fill="#eac0e8" layoutX="127.0" layoutY="379.0" radius="51.0" stroke="BLACK" strokeType="INSIDE" />

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="655.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.saklam.pos.RegistrationController">
+<AnchorPane fx:id="ancWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="655.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.saklam.pos.RegistrationController">
    <children>
       <Label fx:id="lblRegister" layoutX="387.0" layoutY="65.0" snapToPixel="false" stylesheets="@registration.css" text="Register" textFill="WHITE">
          <graphic>
@@ -85,7 +85,7 @@
             <Font name="Segoe UI" size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btnRegister" layoutX="565.0" layoutY="398.0" mnemonicParsing="false" styleClass="test" stylesheets="@registration.css" text="Register">
+      <Button fx:id="btnRegister" layoutX="565.0" layoutY="398.0" mnemonicParsing="false" onAction="#register" styleClass="test" stylesheets="@registration.css" text="Register">
          <font>
             <Font name="Segoe UI" size="12.0" />
          </font>
