@@ -9,22 +9,22 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="437.0" prefWidth="877.0" styleClass="bg" stylesheets="@../styles/landing.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.saklam.pos.LandingController">
-   <children>
-      <Pane layoutX="52.0" layoutY="40.0" prefHeight="359.0" prefWidth="778.0" styleClass="mform" AnchorPane.bottomAnchor="38.0" AnchorPane.leftAnchor="52.0" AnchorPane.rightAnchor="47.0" AnchorPane.topAnchor="40.0">
-         <children>
-            <Label layoutX="356.0" layoutY="21.0" prefHeight="80.0" prefWidth="176.0" text="BookTopia">
-               <font>
-                  <Font name="Georgia" size="36.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="90.0" fitWidth="97.0" layoutX="248.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Images/icons8_ibooks_150px.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="btnLogin" layoutX="162.0" layoutY="196.0" mnemonicParsing="false" onAction="#goToLogin" prefHeight="44.0" prefWidth="241.0" styleClass="btn" stylesheets="@../styles/landing.css" text="Login" textFill="#ae3f96" />
-            <Button fx:id="btnRegister" layoutX="432.0" layoutY="196.0" mnemonicParsing="false" onAction="#goToRegister" prefHeight="44.0" prefWidth="241.0" styleClass="btn" stylesheets="@../styles/landing.css" text="Register" textFill="#a4539a" />
-         </children>
-      </Pane>
-   </children>
-</AnchorPane>
+    <children>
+        <Pane layoutX="52.0" layoutY="40.0" prefHeight="359.0" prefWidth="778.0" styleClass="mform" AnchorPane.bottomAnchor="38.0" AnchorPane.leftAnchor="52.0" AnchorPane.rightAnchor="47.0" AnchorPane.topAnchor="40.0">
+            <children>
+                <Label layoutX="356.0" layoutY="21.0" prefHeight="80.0" prefWidth="176.0" text="BookTopia"> 
+                    <font>
+                        <Font name="Georgia" size="36.0" />
+                    </font>
+                </Label>
+                <ImageView fitHeight="90.0" fitWidth="97.0" layoutX="248.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true"> 
+                    <image>
+                        <Image url="@../Images/icons8_ibooks_150px.png" />
+                    </image>
+                </ImageView>
+                <Button fx:id="btnLogin" layoutX="162.0" layoutY="196.0" mnemonicParsing="false" onAction="#goToLogin" prefHeight="44.0" prefWidth="241.0" styleClass="btn" stylesheets="@../styles/landing.css" text="Login" textFill="#ae3f96" />
+                <Button fx:id="btnRegister" layoutX="432.0" layoutY="196.0" mnemonicParsing="false" onAction="#goToRegister" prefHeight="44.0" prefWidth="241.0" styleClass="btn" stylesheets="@../styles/landing.css" text="Register" textFill="#a4539a" /> 
+            </children>
+        </Pane>
+    </children> 
+</AnchorPane>              

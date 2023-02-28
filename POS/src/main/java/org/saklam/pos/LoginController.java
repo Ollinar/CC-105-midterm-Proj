@@ -53,7 +53,7 @@ public class LoginController implements Initializable {
 
         } catch (IOException ex) {
             Logger.getLogger(LandingController.class.getName()).log(Level.SEVERE, null, ex);
-            new Alert(Alert.AlertType.ERROR,"Failed to load window!").show();
+            new Alert(Alert.AlertType.ERROR, "Failed to load window!").show();
         }
     }
 
@@ -72,7 +72,7 @@ public class LoginController implements Initializable {
             alrt.setTitle(INVALID_INPUT);
             alrt.setContentText(alrt.getContentText() + "Missing Password\n");
         }
-        
+
         Connection conn;
         PreparedStatement statement;
         ResultSet result;
@@ -81,40 +81,44 @@ public class LoginController implements Initializable {
             statement = conn.prepareCall("SELECT * FROM users WHERE email = ?");
             statement.setString(1, txtEmail.getText());
             result = statement.executeQuery();
-            if(result.next()){
+            if (result.next()) {
                 var hashedPass = result.getString("userPass");
                 Argon2 argonHasher = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
                 Boolean matched = argonHasher.verify(hashedPass, txtPass.getText().toCharArray());
-                if(Boolean.TRUE.equals(matched)){
+                if (Boolean.TRUE.equals(matched)) {
                     //give the appropreiate window
-                    new Alert(Alert.AlertType.INFORMATION,"Login Success").show();
-                    if(result.getString("userType").equals("Admin")){
+                    new Alert(Alert.AlertType.INFORMATION, "Login Success").show();
+                    if (result.getString("userType").equals("Admin")) {
                         //give admin window
+                        result.close();
+                        statement.close();
+                        conn.close();
                         App.setRoot("Admin");
-                    }else{
+                    } else {
                         //give the employee window
+                        result.close();
+                        statement.close();
+                        conn.close();
                     }
-                }else{
+                } else {
                     alrt.setTitle("Login Failed");
                     alrt.setContentText("Password didn't Match");
                     alrt.show();
                     return;
                 }
-            }else{
+            } else {
                 alrt.setTitle("Login Failed");
                 alrt.setContentText("No Such Email Registered");
                 alrt.show();
                 return;
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-            new Alert(Alert.AlertType.ERROR,"Failed to load window!").show();
+            new Alert(Alert.AlertType.ERROR, "Failed to load window!").show();
         }
-        
-        
 
     }
 

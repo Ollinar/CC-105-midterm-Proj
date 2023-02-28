@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,7 +117,7 @@ public class RegistrationController implements Initializable {
                 invalidInp = true;
                 alrt.setTitle(INVALID_INPUT);
                 alrt.setContentText(alrt.getContentText() + "Invalid Email, Email Already Taken\n");
-                
+
                 //closing resources
                 result.close();
                 statement.closeOnCompletion();
@@ -138,7 +137,7 @@ public class RegistrationController implements Initializable {
             invalidInp = true;
             alrt.setTitle(INVALID_INPUT);
             alrt.setContentText(alrt.getContentText() + "Missing Password\n");
-        } else if (txtPass.getText().length() <= 8) {
+        } else if (txtPass.getText().length() < 8) {
             invalidInp = true;
             alrt.setTitle(INVALID_INPUT);
             alrt.setContentText(alrt.getContentText() + "Invalid Password(Needs to be atleast 8 characters)\n");
@@ -172,18 +171,20 @@ public class RegistrationController implements Initializable {
             } else {
                 statement.setString(7, "Admin");
             }
-            //execute query
+            //execute query. Made a coppy of statemnt to make it a final and use it in lambda expresion
+            final PreparedStatement stmnt = statement;
             Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Continue?");
             conf.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
                     try {
-                        statement.execute();
+                        stmnt.execute();
                     } catch (SQLException ex) {
                         Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+                        new Alert(Alert.AlertType.ERROR, "Failed to Save!").show();
                     }
                     new Alert(Alert.AlertType.INFORMATION, "Register Successfull").show();
-                }
 
+                }
             });
 
             //closes resources
