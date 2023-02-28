@@ -7,6 +7,6 @@ module org.saklam.pos {
     requires de.mkammerer.argon2.nolibs;
     
 
-    opens org.saklam.pos to javafx.fxml;
+    opens fxml to javafx.fxml;
     exports org.saklam.pos;
 }
