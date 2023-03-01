@@ -2,29 +2,37 @@
  * Empty Stylesheet file.
  */
 .bg{
-    -fx-background-image: url(../Images/B.jpg);
+    -fx-background-image: url(../Images/adminbg.jpg);
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-width: 100%;
+   
 }
 .mainFxmlClass {
-    -fx-background-color: #ba5bb2;
+   -fx-background-color: #6b3714;
 }
 .mpane{
-    -fx-background-color: #edd8e4;
+   -fx-background: transparent;
     -fx-border-color:white;
+    -fx-color: #50290e;
 }
 .lgbtn {
-  -fx-background-color: pink;
+ -fx-background-color:  #50290e;
   -fx-border-color:white;
    
 }
 .btns{
-   -fx-background-color: #bd6a99;
+   -fx-background-color: #9c5e40;
   -fx-border-color:white;
   
 }
 .btn2{
-    -fx-background-color: pink;
+    -fx-background-color: #9c5e40;
   -fx-border-color:white;
+}
+.tab-header-background{
+    -fx-background-color:#50290e;
+}
+.tbview{
+    -fx-background-color:#a18374;
 }

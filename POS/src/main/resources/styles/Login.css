@@ -1,12 +1,23 @@
 /*
  * Empty Stylesheet file.
  */
-#leftPane{
-    -fx-background-color: rgb(178,126,178);
+.lgbg{
+    -fx-background-image: url(../Images/adminbg.jpg);
+   
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-width: 100%;
+    -fx-height: 100%;
 }
-#rightPane{
-    -fx-background-color: rgb(193,164,193);
+.lgform{
+    -fx-background:transparent;
+    -fx-border-color: white;
+    -fx-border-radius: 55px;
 }
-.field{
-    -fx-background-color:rgb(193,164,193);
+
+.btn{
+    -fx-background-color: #916b54;
+    -fx-border-radius: 50px;
+
 }

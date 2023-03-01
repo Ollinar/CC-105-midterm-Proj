@@ -15,35 +15,30 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="630.0" prefWidth="1149.0" stylesheets="@../styles/admin.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.saklam.pos.AdminController">
+<AnchorPane id="AnchorPane" prefHeight="689.0" prefWidth="1149.0" stylesheets="@../styles/admin.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.saklam.pos.AdminController">
    <children>
       <Pane prefHeight="630.0" prefWidth="1149.0" styleClass="bg" stylesheets="@../styles/admin.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label layoutX="997.0" layoutY="67.0" text="BookTopia" textFill="#b25baf">
-               <font>
-                  <Font name="Microsoft PhagsPa Bold" size="26.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="64.0" fitWidth="101.0" layoutX="1031.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="89.0" fitWidth="132.0" layoutX="1002.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Images/icons8_ibooks_150px.png" />
+                  <Image url="@../Images/logo.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="64.0" fitWidth="50.0" layoutX="64.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="64.0" fitWidth="50.0" layoutX="53.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/icons8_user_50px.png" />
                </image>
             </ImageView>
             <Label layoutX="140.0" layoutY="19.0" />
-            <Label layoutX="21.0" layoutY="71.0" text="A   D   M   I   N" textFill="#d32626">
+            <Label layoutX="21.0" layoutY="71.0" text="A   D   M   I   N" textFill="#da8244">
                <font>
                   <Font name="Microsoft PhagsPa Bold" size="20.0" />
                </font>
             </Label>
-            <Button fx:id="btnLogout" layoutX="1046.0" layoutY="591.0" mnemonicParsing="false" onAction="#Logout" prefHeight="32.0" prefWidth="75.0" styleClass="lgbtn" stylesheets="@../styles/admin.css" text="Logout" textFill="#a41e8e" />
-            <TabPane layoutX="21.0" layoutY="99.0" prefHeight="484.0" prefWidth="1107.0" translateX="1.0" translateY="1.0">
+            <Button fx:id="btnLogout" layoutX="998.0" layoutY="642.0" mnemonicParsing="false" onAction="#Logout" prefHeight="32.0" prefWidth="120.0" styleClass="lgbtn" stylesheets="@../styles/admin.css" text="Logout" textFill="WHITE" />
+            <TabPane layoutX="21.0" layoutY="99.0" prefHeight="517.0" prefWidth="1107.0" styleClass="tab" stylesheets="@../styles/admin.css" translateX="1.0" translateY="1.0">
                <tabs>
-                  <Tab closable="false" text="Product">
+                  <Tab closable="false" text="        Product        ">
                      <content>
                         <Pane prefHeight="455.0" prefWidth="958.0" styleClass="mpane" stylesheets="@../styles/admin.css">
                            <children>
@@ -53,39 +48,39 @@
                               <TextField fx:id="txtPrice" layoutX="131.0" layoutY="188.0" prefHeight="25.0" prefWidth="179.0" />
                               <TextField fx:id="txtStock" layoutX="131.0" layoutY="229.0" prefHeight="25.0" prefWidth="179.0" />
                               <TextField fx:id="txtAddStock" layoutX="131.0" layoutY="271.0" prefHeight="25.0" prefWidth="179.0" />
-                              <Label layoutX="23.0" layoutY="122.0" text="Category:" textFill="#b25baf">
+                              <Label layoutX="23.0" layoutY="122.0" text="Category:" textFill="#e4b597">
                                  <font>
                                     <Font name="Georgia" size="16.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="23.0" layoutY="44.0" text="Item name:" textFill="#b25baf">
+                              <Label layoutX="23.0" layoutY="44.0" text="Item name:" textFill="#e4b597">
                                  <font>
                                     <Font name="Georgia" size="16.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="23.0" layoutY="84.0" text="Author:" textFill="#b25baf">
+                              <Label layoutX="23.0" layoutY="84.0" text="Author:" textFill="#e4b597">
                                  <font>
                                     <Font name="Georgia" size="16.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="23.0" layoutY="191.0" text="Price:" textFill="#b25baf">
+                              <Label layoutX="23.0" layoutY="191.0" text="Price:" textFill="#e4b597">
                                  <font>
                                     <Font name="Georgia" size="16.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="23.0" layoutY="232.0" text="Current stock:" textFill="#b25baf">
+                              <Label layoutX="23.0" layoutY="232.0" text="Current stock:" textFill="#e4b597">
                                  <font>
                                     <Font name="Georgia" size="16.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="23.0" layoutY="274.0" text="Add stock" textFill="#b25baf">
+                              <Label layoutX="23.0" layoutY="274.0" text="Add stock" textFill="#e4b597">
                                  <font>
                                     <Font name="Georgia" size="16.0" />
                                  </font>
                               </Label>
                               <StackPane layoutX="316.0" layoutY="41.0" prefHeight="400.0" prefWidth="774.0">
                                  <children>
-                                    <TableView fx:id="tblProd" onMouseClicked="#tblClicked" prefHeight="400.0" prefWidth="716.0">
+                                    <TableView fx:id="tblProd" onMouseClicked="#tblClicked" prefHeight="400.0" prefWidth="716.0" styleClass="tbview" stylesheets="@../styles/admin.css">
                                       <columns>
                                         <TableColumn fx:id="colItmCode" prefWidth="61.0" text="Item code" />
                                           <TableColumn fx:id="colItmName" text="Item name" />
@@ -98,13 +93,13 @@
                                     </TableView>
                                  </children>
                               </StackPane>
-                              <Button fx:id="btnAddStock" layoutX="38.0" layoutY="350.0" mnemonicParsing="false" onAction="#addStock" prefHeight="32.0" prefWidth="119.0" styleClass="btn2" stylesheets="@../styles/admin.css" text="Add Stock" textFill="#9e2291" />
-                              <Button fx:id="btnAddItem" layoutX="176.0" layoutY="350.0" mnemonicParsing="false" onAction="#addItem" prefHeight="32.0" prefWidth="119.0" styleClass="btn2" stylesheets="@../styles/admin.css" text="Add Item" textFill="#9e2291" />
-                              <Button fx:id="btnUpdateItem" layoutX="38.0" layoutY="401.0" mnemonicParsing="false" onAction="#updateBtn" prefHeight="32.0" prefWidth="119.0" styleClass="btn2" stylesheets="@../styles/admin.css" text="Update Item" textFill="#9e2291" />
-                              <Button fx:id="btnDeleteItem" layoutX="176.0" layoutY="401.0" mnemonicParsing="false" onAction="#DeleteItem" prefHeight="32.0" prefWidth="119.0" styleClass="btn2" stylesheets="@../styles/admin.css" text="Delete Item" textFill="#9e2291" />
-                              <Button fx:id="btnSave" layoutX="38.0" layoutY="302.0" mnemonicParsing="false" onAction="#save" prefHeight="32.0" prefWidth="119.0" styleClass="btn2" stylesheets="@../styles/admin.css" text="Save" textFill="#9e2291" />
-                              <Button fx:id="btnCancel" layoutX="176.0" layoutY="302.0" mnemonicParsing="false" onAction="#cancel" prefHeight="32.0" prefWidth="119.0" styleClass="btn2" stylesheets="@../styles/admin.css" text="Cancel" textFill="#9e2291" />
-                              <Label layoutX="23.0" layoutY="153.0" text="Description:" textFill="#b25baf">
+                              <Button fx:id="btnAddStock" layoutX="38.0" layoutY="368.0" mnemonicParsing="false" onAction="#addStock" prefHeight="32.0" prefWidth="119.0" styleClass="btn2" stylesheets="@../styles/admin.css" text="Add Stock" textFill="#ffcfaf" />
+                              <Button fx:id="btnAddItem" layoutX="176.0" layoutY="368.0" mnemonicParsing="false" onAction="#addItem" prefHeight="32.0" prefWidth="119.0" styleClass="btn2" stylesheets="@../styles/admin.css" text="Add Item" textFill="#ffcfaf" />
+                              <Button fx:id="btnUpdateItem" layoutX="38.0" layoutY="426.0" mnemonicParsing="false" onAction="#updateBtn" prefHeight="32.0" prefWidth="119.0" styleClass="btn2" stylesheets="@../styles/admin.css" text="Update Item" textFill="#ffcfaf" />
+                              <Button fx:id="btnDeleteItem" layoutX="176.0" layoutY="426.0" mnemonicParsing="false" onAction="#DeleteItem" prefHeight="32.0" prefWidth="119.0" styleClass="btn2" stylesheets="@../styles/admin.css" text="Delete Item" textFill="#ffcfaf" />
+                              <Button fx:id="btnSave" layoutX="38.0" layoutY="311.0" mnemonicParsing="false" onAction="#save" prefHeight="32.0" prefWidth="119.0" styleClass="btn2" stylesheets="@../styles/admin.css" text="Save" textFill="#ffcfaf" />
+                              <Button fx:id="btnCancel" layoutX="176.0" layoutY="312.0" mnemonicParsing="false" onAction="#cancel" prefHeight="32.0" prefWidth="119.0" styleClass="btn2" stylesheets="@../styles/admin.css" text="Cancel" textFill="#ffcfaf" />
+                              <Label layoutX="23.0" layoutY="153.0" text="Description:" textFill="#e4b597">
                                  <font>
                                     <Font name="Georgia" size="16.0" />
                                  </font>
@@ -114,7 +109,7 @@
                         </Pane>
                      </content>
                   </Tab>
-                  <Tab closable="false" text="Sales">
+                  <Tab closable="false" text="        Sales        ">
                      <content>
                         <Pane prefHeight="455.0" prefWidth="958.0" styleClass="mpane" stylesheets="@../styles/admin.css" />
                      </content>

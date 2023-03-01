@@ -2,19 +2,21 @@
  * Empty Stylesheet file.
  */
 .bg{
-    -fx-background-image: url(../Images/b3.jpg);
+    -fx-background-image: url(../Images/landbg2.jpg);
+    -fx-filter: blur(15px);
+    -fx-webkit-filter: blur(15px);
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover;
+    -fx-background-position: center;
     -fx-width: 100%;
+    -fx-height: 100%;
 }
 .mform{
-    -fx-background: transparent;
     -fx-border-color:white;
-    -fx-border-radius: 25px;
+    -fx-border-radius: 50px;
 }
 .btn{
-    -fx-background-color: rgba(0,0,0,0);
-    -fx-border-color:#e8276e;
+    -fx-background-color: #916b54;
     -fx-border-radius: 50px;
 
 }

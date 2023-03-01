@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
@@ -12,9 +13,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="655.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.saklam.pos.RegistrationController">
+<AnchorPane fx:id="ancWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="834.0" styleClass="regbg" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.saklam.pos.RegistrationController">
    <children>
-      <Label fx:id="lblRegister" layoutX="387.0" layoutY="65.0" snapToPixel="false" stylesheets="@registration.css" text="Register" textFill="WHITE">
+      <Label fx:id="lblRegister" layoutX="510.0" layoutY="49.0" snapToPixel="false" stylesheets="@registration.css" text="Register" textFill="#c6875f">
          <graphic>
             <ImageView fitHeight="19.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -26,48 +27,48 @@
             <Font name="Yu Gothic Regular" size="24.0" />
          </font>
       </Label>
-      <PasswordField fx:id="txtPass" layoutX="477.0" layoutY="266.0" />
-      <Label layoutX="267.0" layoutY="116.0" styleClass="lblField" stylesheets="@registration.css" text="First Name" textFill="#ccffff">
+      <PasswordField fx:id="txtPass" layoutX="612.0" layoutY="266.0" prefHeight="25.0" prefWidth="164.0" />
+      <Label layoutX="377.0" layoutY="116.0" styleClass="lblField" stylesheets="@registration.css" text="First Name" textFill="#e0b17e">
          <font>
             <Font name="Consolas" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtFName" layoutX="268.0" layoutY="136.0" />
-      <Label layoutX="475.0" layoutY="115.0" stylesheets="@registration.css" text="Last Name" textFill="#ccffff">
+      <TextField fx:id="txtFName" layoutX="377.0" layoutY="136.0" prefHeight="25.0" prefWidth="164.0" />
+      <Label layoutX="376.0" layoutY="247.0" stylesheets="@registration.css" text="Last Name" textFill="#e0b17e">
          <font>
             <Font name="Consolas" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtLName" layoutX="476.0" layoutY="135.0" />
-      <Label layoutX="267.0" layoutY="180.0" styleClass="lblField" stylesheets="@registration.css" text="Middle Name" textFill="#ccffff">
+      <TextField fx:id="txtLName" layoutX="377.0" layoutY="266.0" prefHeight="25.0" prefWidth="164.0" />
+      <Label layoutX="379.0" layoutY="180.0" styleClass="lblField" stylesheets="@registration.css" text="Middle Name" textFill="#e0b17e">
          <font>
             <Font name="Consolas" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtMName" layoutX="268.0" layoutY="200.0" />
-      <Label layoutX="477.0" layoutY="179.0" styleClass="lblField" stylesheets="@registration.css" text="Email" textFill="#ccffff">
+      <TextField fx:id="txtMName" layoutX="377.0" layoutY="200.0" prefHeight="25.0" prefWidth="164.0" />
+      <Label layoutX="614.0" layoutY="179.0" styleClass="lblField" stylesheets="@registration.css" text="Email" textFill="#e0b17e">
          <font>
             <Font name="Consolas" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtEmail" layoutX="478.0" layoutY="199.0" />
-      <Label layoutX="267.0" layoutY="247.0" styleClass="lblField" stylesheets="@registration.css" text="Username" textFill="#ccffff">
+      <TextField fx:id="txtEmail" layoutX="613.0" layoutY="199.0" prefHeight="25.0" prefWidth="164.0" />
+      <Label layoutX="613.0" layoutY="116.0" styleClass="lblField" stylesheets="@registration.css" text="Username" textFill="#e0b17e">
          <font>
             <Font name="Consolas" size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtUsername" layoutX="271.0" layoutY="268.0" />
-      <Label layoutX="479.0" layoutY="247.0" styleClass="lblField" stylesheets="@registration.css" text="Password" textFill="#ccffff">
+      <TextField fx:id="txtUsername" layoutX="613.0" layoutY="135.0" prefHeight="25.0" prefWidth="164.0" />
+      <Label layoutX="613.0" layoutY="247.0" styleClass="lblField" stylesheets="@registration.css" text="Password" textFill="#e0b17e">
          <font>
             <Font name="Consolas" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="270.0" layoutY="313.0" text="User Type" textFill="#ccffff">
+      <Label layoutX="380.0" layoutY="313.0" text="USER TYPE" textFill="#e0b17e">
          <font>
             <Font name="Consolas" size="14.0" />
          </font>
       </Label>
-      <RadioButton fx:id="rdoEmp" layoutX="276.0" layoutY="349.0" mnemonicParsing="false" text="Employee" textFill="#ccffff">
+      <RadioButton fx:id="rdoEmp" layoutX="379.0" layoutY="349.0" mnemonicParsing="false" text="Employee" textFill="#e0b17e">
          <font>
             <Font name="Consolas" size="14.0" />
          </font>
@@ -75,41 +76,37 @@
             <ToggleGroup fx:id="userType" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="rdoAdmin" layoutX="402.0" layoutY="349.0" mnemonicParsing="false" text="Admin" textFill="#ccffff" toggleGroup="$userType">
+      <RadioButton fx:id="rdoAdmin" layoutX="510.0" layoutY="349.0" mnemonicParsing="false" text="Admin" textFill="#e0b17e" toggleGroup="$userType">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <Button fx:id="btnCancel" layoutX="490.0" layoutY="398.0" mnemonicParsing="false" onAction="#cancel" styleClass="test" stylesheets="@registration.css" text="Cancel">
+      <Button fx:id="btnCancel" layoutX="378.0" layoutY="398.0" mnemonicParsing="false" onAction="#cancel" prefHeight="23.0" prefWidth="66.0" styleClass="btn" stylesheets="@registration.css" text="Cancel" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btnRegister" layoutX="565.0" layoutY="398.0" mnemonicParsing="false" onAction="#register" styleClass="test" stylesheets="@registration.css" text="Register">
+      <Button fx:id="btnRegister" layoutX="704.0" layoutY="398.0" mnemonicParsing="false" onAction="#register" prefHeight="23.0" prefWidth="70.0" styleClass="btn" stylesheets="@registration.css" text="Register" textFill="WHITE">
          <font>
             <Font name="Segoe UI" size="12.0" />
          </font>
       </Button>
-      <Label layoutX="14.0" layoutY="121.0" text="A few clicks away from" textFill="#660066">
+      <Label layoutX="14.0" layoutY="94.0" text="A few clicks away from" textFill="#ebc9b9">
          <font>
             <Font name="Consolas Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="48.0" layoutY="150.0" text="creating your account" textFill="#660066">
+      <Label layoutX="39.0" layoutY="125.0" text="creating your account" textFill="#f8d8c9">
          <font>
             <Font name="Consolas Bold" size="18.0" />
          </font>
       </Label>
-      <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="2.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="196.0" fitWidth="218.0" layoutX="34.0" layoutY="189.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Images/icons8_scribd_50px.png" />
+            <Image url="@../Images/logo.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="48.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/icons8_ibooks_150px.png" />
-         </image>
-      </ImageView>
+      <Separator layoutX="264.0" orientation="VERTICAL" prefHeight="461.0" prefWidth="6.0" />
    </children>
    <stylesheets>
       <URL value="@../../../styles/registration.css" />
