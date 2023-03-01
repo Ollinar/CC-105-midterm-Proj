@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javafx.scene.image.Image;
 
 /**
  * JavaFX App
@@ -15,15 +16,20 @@ public class App extends Application {
 
     protected static Scene scene;
 
+
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("Landing"));
+        stage.setResizable(false);
+        stage.getIcons().add(new Image(App.class.getResourceAsStream("/Images/booktopia-logo-removebg-preview.png")));
+        stage.setTitle("Booktopia");
         stage.setScene(scene);
         stage.show();
     }
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
+        scene.getWindow().sizeToScene();
     }
 
     private static Parent loadFXML(String fxml) throws IOException {        
