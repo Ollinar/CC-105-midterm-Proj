@@ -20,15 +20,16 @@ import org.apache.derby.jdbc.EmbeddedDriver;
  */
 public class Main {
 
+    
     protected static Connection conn = null;
     static Statement statement;
-    final static String url = "jdbc:derby:app";
+    final static String url = "jdbc:derby:app;shutdow=true";
     public static void main(String[] args) {
-
+        System.setProperty("derby.language.sequence.preallocator", String.valueOf(1));
         try {
             Driver embededDriver = new EmbeddedDriver();
+            
             DriverManager.registerDriver(embededDriver);
-
             conn = DriverManager.getConnection(url + ";create=true");
             DatabaseMetaData dbInfo = conn.getMetaData();
             
@@ -36,7 +37,7 @@ public class Main {
             /*prepping the table for products
             current data field: prodID,prodName,prodPrice,prodStock*/
             if (!dbInfo.getTables(null, null, "PRODUCT", null).next()) {
-                statement.execute("CREATE TABLE product (prodID BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY(START WITH 1, INCREMENT BY 1) , prodName VARCHAR(255) NOT NULL , prodPrice FLOAT NOT NULL , prodStock INT NOT NULL , PRIMARY KEY (prodID))");
+                statement.execute("CREATE TABLE product (prodID BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY(START WITH 1, INCREMENT BY 1) ,prodCat VARCHAR(255) NOT NULL, prodName VARCHAR(255) NOT NULL , prodAuthor VARCHAR(255) NOT NULL, prodDesc VARCHAR(255), prodPrice DOUBLE NOT NULL , prodStock INT NOT NULL , PRIMARY KEY (prodID))");
             }
             /*prepping the table for users
             current data field: userID,userName,userPass,userType*/
