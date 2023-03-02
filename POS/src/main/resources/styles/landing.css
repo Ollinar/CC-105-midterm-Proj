@@ -3,8 +3,6 @@
  */
 .bg{
     -fx-background-image: url(../Images/landbg2.jpg);
-    -fx-filter: blur(15px);
-    -fx-webkit-filter: blur(15px);
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover;
     -fx-background-position: center;
@@ -13,10 +11,11 @@
 }
 .mform{
     -fx-border-color:white;
-    -fx-border-radius: 50px;
+    -fx-border-radius: 25px;
 }
 .btn{
-    -fx-background-color: #916b54;
+    -fx-background-color: transparent;
+    -fx-border-color: white;
     -fx-border-radius: 50px;
 
 }
