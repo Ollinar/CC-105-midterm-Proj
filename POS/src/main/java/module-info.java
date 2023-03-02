@@ -5,6 +5,7 @@ module org.saklam.pos {
     requires derby;
     requires de.mkammerer.argon2;
     requires de.mkammerer.argon2.nolibs;
+    requires java.base;
     
 
     opens fxml to javafx.fxml;
