@@ -79,9 +79,6 @@ public class RegistrationController implements Initializable {
         Alert alrt = new Alert(Alert.AlertType.NONE, "", new ButtonType("Try Again"));
         final String INVALID_INPUT = "Invalid Input";
         Boolean invalidInp = false;
-        Connection conn;
-        PreparedStatement statement;
-        ResultSet result;
         if (txtFName.getText().isBlank()) {
             invalidInp = true;
             alrt.setTitle(INVALID_INPUT);
@@ -107,24 +104,16 @@ public class RegistrationController implements Initializable {
             alrt.setTitle(INVALID_INPUT);
             alrt.setContentText(alrt.getContentText() + "Invalid Email format(Should have '@')\n");
         }
-        //validates email, Making sure its not taken
         try {
-            conn = Main.connect(Main.url);
-            statement = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
-            statement.setString(1, txtEmail.getText());
-            result = statement.executeQuery();
-            if (result.next()) {
+            //validates email, Making sure its not taken
+            if (DBInterface.validateEmail(txtEmail.getText()) != null) {
                 invalidInp = true;
                 alrt.setTitle(INVALID_INPUT);
                 alrt.setContentText(alrt.getContentText() + "Invalid Email, Email Already Taken\n");
-
-                //closing resources
-                result.close();
-                statement.closeOnCompletion();
-                conn.close();
             }
         } catch (SQLException ex) {
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+            new Alert(Alert.AlertType.ERROR, "Error with with the SQLdatabase").show();
         }
 
         if (txtUsername.getText().isBlank()) {
@@ -153,48 +142,24 @@ public class RegistrationController implements Initializable {
             return;
         }
 
+        //if all is good insert it to db
+        String userTypes;
+        //password hashing
+        Argon2 argonHasher = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
+        String hashedPass = argonHasher.hash(5, 20 * 1024, 2, txtPass.getText().toCharArray());
+        //get the user type
+        if (rdoEmp.isSelected()) {
+            userTypes = "Employee";
+        } else {
+            userTypes = "Admin";
+        }
         try {
-            conn = Main.connect(Main.url);
-            statement = conn.prepareStatement("Insert INTO users (fName, lName, mName, email, userName, userPass, userType) VALUES(?,?,?,?,?,?,?)");
-            statement.setString(1, txtFName.getText());
-            statement.setString(2, txtLName.getText());
-            statement.setString(3, txtMName.getText());
-            statement.setString(4, txtEmail.getText());
-            statement.setString(5, txtUsername.getText());
-            //password hashing
-            Argon2 argonHasher = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
-            String hashedPass = argonHasher.hash(5, 20 * 1024, 2, txtPass.getText().toCharArray());
-            statement.setString(6, hashedPass);
-
-            if (rdoEmp.isSelected()) {
-                statement.setString(7, "Employee");
-            } else {
-                statement.setString(7, "Admin");
-            }
-            //execute query. Made a coppy of statemnt to make it a final and use it in lambda expresion
-            final PreparedStatement stmnt = statement;
-            Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Continue?");
-            conf.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    try {
-                        stmnt.execute();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
-                        new Alert(Alert.AlertType.ERROR, "Failed to Save!").show();
-                    }
-                    new Alert(Alert.AlertType.INFORMATION, "Register Successfull").show();
-
-                }
-            });
-
-            //closes resources
-            statement.close();
-            conn.close();
-
+            //insert to db all data
+            DBInterface.insertUser(new UserModel(txtFName.getText(), txtMName.getText(), txtLName.getText(), txtEmail.getText(), txtUsername.getText(), userTypes, hashedPass));
         } catch (SQLException ex) {
             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+            new Alert(Alert.AlertType.ERROR, "Error with with the SQLdatabase").show();
         }
-
     }
 
     @FXML

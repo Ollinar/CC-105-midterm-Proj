@@ -146,7 +146,7 @@ public class AdminController implements Initializable {
 
     protected static void refreshProdList() {
         try {
-            Connection conn = Main.connect(Main.url);
+            Connection conn = DBInterface.connect();
             Statement stmnt = conn.createStatement();
             ResultSet result = stmnt.executeQuery("SELECT * FROM product");
             //clean the list and populate it again
@@ -235,7 +235,7 @@ public class AdminController implements Initializable {
 
         try {
 
-            conn = Main.connect(Main.url);
+            conn = DBInterface.connect();
 
             stmnt = conn.prepareCall("INSERT INTO product (prodName, prodAuthor, prodCat, prodDesc, prodPrice, ProdStock)VALUES(?,?,?,?,?,?)");
             stmnt.setString(1, prodName);
@@ -279,7 +279,7 @@ public class AdminController implements Initializable {
 
         try {
 
-            conn = Main.connect(Main.url);
+            conn = DBInterface.connect();
 
             stmnt = conn.prepareCall("UPDATE product SET prodName = ?, prodAuthor = ?, prodCat = ?, prodDesc = ?, prodPrice = ?, ProdStock = ? WHERE prodID = ?");
             stmnt.setString(1, prodName);
@@ -320,7 +320,7 @@ public class AdminController implements Initializable {
 
         try {
 
-            conn = Main.connect(Main.url);
+            conn = DBInterface.connect();
 
             stmnt = conn.prepareCall("UPDATE product SET ProdStock = ? WHERE prodID = ?");
             stmnt.setInt(1, stock + stockToAdd);
@@ -352,7 +352,7 @@ public class AdminController implements Initializable {
         Connection conn;
         final PreparedStatement stmnt;
         try {
-            conn = Main.connect(Main.url);
+            conn = DBInterface.connect();
             stmnt = conn.prepareCall("DELETE FROM product WHERE prodID = ?");
             stmnt.setInt(1, prodID);
             Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "DO YO WANT TO CONTINUE TO DELETE SELECTED ITEM?");

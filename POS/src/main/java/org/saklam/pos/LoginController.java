@@ -72,54 +72,45 @@ public class LoginController implements Initializable {
             alrt.setTitle(INVALID_INPUT);
             alrt.setContentText(alrt.getContentText() + "Missing Password\n");
         }
-
-        Connection conn;
-        PreparedStatement statement;
-        ResultSet result;
+        if(invalidInp){
+            alrt.show();
+            return;
+        }
+            
+        //query db to retun mathed email. will be null if theres no matched
+        UserModel dBMatched;
         try {
-            conn = Main.connect(Main.url);
-            statement = conn.prepareCall("SELECT * FROM users WHERE email = ?");
-            statement.setString(1, txtEmail.getText());
-            result = statement.executeQuery();
-            if (result.next()) {
-                var hashedPass = result.getString("userPass");
-                Argon2 argonHasher = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
-                Boolean matched = argonHasher.verify(hashedPass, txtPass.getText().toCharArray());
-                if (Boolean.TRUE.equals(matched)) {
-                    //give the appropreiate window
-                    new Alert(Alert.AlertType.INFORMATION, "Login Success").show();
-                    if (result.getString("userType").equals("Admin")) {
-                        //give admin window
-                        result.close();
-                        statement.close();
-                        conn.close();
-                        App.setRoot("Admin");
+            dBMatched = DBInterface.validateEmail(txtEmail.getText());
+            if (dBMatched != null) {
+                //if theres an email matched. tyr and see if password matched
+                String hashedPass;
+                    hashedPass = dBMatched.getPass();
+                    Argon2 argonHasher = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
+                    Boolean matched = argonHasher.verify(hashedPass, txtPass.getText().toCharArray());
+                    if (Boolean.TRUE.equals(matched)) {
+                        //give the appropreiate window
+                        new Alert(Alert.AlertType.INFORMATION, "Login Success").show();
+                        if (dBMatched.getType().equals("Admin")) {
+                            //give admin window
+                            App.setRoot("Admin");
+                        } else {
+                            //give the employee window
+                        }
                     } else {
-                        //give the employee window
-                        result.close();
-                        statement.close();
-                        conn.close();
+                        alrt.setTitle("Login Failed");
+                        alrt.setContentText("Password didn't Match");
                     }
-                } else {
-                    alrt.setTitle("Login Failed");
-                    alrt.setContentText("Password didn't Match");
-                    alrt.show();
-                    return;
-                }
             } else {
                 alrt.setTitle("Login Failed");
                 alrt.setContentText("No Such Email Registered");
-                alrt.show();
-                return;
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            new Alert(Alert.AlertType.ERROR, "Error with with the SQLdatabase").show();
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
             new Alert(Alert.AlertType.ERROR, "Failed to load window!").show();
         }
-
     }
 
 }
