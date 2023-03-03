@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import org.apache.derby.jdbc.EmbeddedDriver;
@@ -84,10 +85,10 @@ public class DBInterface {
             conn = connect();
             stmnt = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
             stmnt.setString(1, email);
-            
+
             rslt = stmnt.executeQuery();
             if (rslt.next()) {
-                return new UserModel(rslt.getString("userType"),rslt.getString("userPass"));
+                return new UserModel(rslt.getString("userType"), rslt.getString("userPass"));
             } else {
                 return null;
             }
@@ -144,4 +145,65 @@ public class DBInterface {
 
     }
 
+    public static void refreshProdList(ObservableList<Product> prodList) throws SQLException {
+        Statement stmnt = null;
+        try {
+            conn = connect();
+
+            stmnt = conn.createStatement();
+            ResultSet result = stmnt.executeQuery("SELECT * FROM product");
+            //clean the list and populate it again
+            prodList.clear();
+            while (result.next()) {
+                prodList.add(new Product(result.getInt("prodID"), result.getString("prodCat"), result.getString("prodName"), result.getString("prodDesc"), result.getString("prodAuthor"), result.getDouble("prodPrice"), result.getInt("prodStock")));
+            }
+        } finally {
+            if (stmnt != null) {
+                stmnt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
+    }
+
+    public static void updateStockFromDB(Product prod, int amnt) throws SQLException {
+        int prodID = prod.getItmCode();
+        int stock = prod.getStock();
+        int stockToAdd = amnt;
+        PreparedStatement stmnt = null;
+
+        try {
+
+            conn = DBInterface.connect();
+
+            stmnt = conn.prepareCall("UPDATE product SET ProdStock = ? WHERE prodID = ?");
+            stmnt.setInt(1, stock + stockToAdd);
+            stmnt.setInt(2, prodID);
+            
+            final PreparedStatement statement = stmnt;
+            Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Continue?");
+            conf.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    try {
+                        statement.execute();
+                        statement.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+                        new Alert(Alert.AlertType.ERROR, "Failed to Save!").show();
+                    }
+                    new Alert(Alert.AlertType.INFORMATION, "Added Stock Succesfully").show();
+
+                }
+            });
+        } finally {
+            if (stmnt != null) {
+                stmnt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
 }

@@ -16,6 +16,7 @@ public class Product {
     String author;
     Double price;
     int stock;
+    int quantity;
 
   public Product(int itmCode, String cat, String itmName, String desc, String author, Double price, int stock) {
         this.itmCode = itmCode;
@@ -26,6 +27,24 @@ public class Product {
         this.price = price;
         this.stock = stock;
     }
+
+    public Product(int itmCode, String itmName, Double price, int quantity) {
+        this.itmCode = itmCode;
+        this.itmName = itmName;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+  
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+  
+  
   
     public String getDesc() {
         return desc;

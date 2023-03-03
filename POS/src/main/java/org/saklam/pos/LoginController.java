@@ -95,6 +95,7 @@ public class LoginController implements Initializable {
                             App.setRoot("Admin");
                         } else {
                             //give the employee window
+                            App.setRoot("User");
                         }
                     } else {
                         alrt.setTitle("Login Failed");

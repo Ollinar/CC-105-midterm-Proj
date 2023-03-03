@@ -103,7 +103,12 @@ public class AdminController implements Initializable {
         colAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        refreshProdList();
+        try {
+            DBInterface.refreshProdList(prodList);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+            new Alert(Alert.AlertType.ERROR, "Database Error").show();
+        }
         //disable all input fields
         disableFields();
 
@@ -142,26 +147,6 @@ public class AdminController implements Initializable {
         btnDeleteItem.setDisable(true);
         btnAddStock.setDisable(true);
         disableContBtns();
-    }
-
-    protected static void refreshProdList() {
-        try {
-            Connection conn = DBInterface.connect();
-            Statement stmnt = conn.createStatement();
-            ResultSet result = stmnt.executeQuery("SELECT * FROM product");
-            //clean the list and populate it again
-            prodList.clear();
-            while (result.next()) {
-                prodList.add(new Product(result.getInt("prodID"), result.getString("prodCat"), result.getString("prodName"), result.getString("prodDesc"), result.getString("prodAuthor"), result.getDouble("prodPrice"), result.getInt("prodStock")));
-            }
-            result.close();
-            stmnt.close();
-            conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
-            new Alert(Alert.AlertType.ERROR, "Database Error").show();
-        }
-
     }
 
     private void clearFields() {
@@ -310,45 +295,9 @@ public class AdminController implements Initializable {
         }
     }
 
-    private void addStockToDB() {
-        int prodID = selectedProd.getItmCode();
-        int stock = selectedProd.getStock();
-        int stockToAdd = Integer.parseInt(txtAddStock.getText());
-
-        Connection conn;
-        final PreparedStatement stmnt;
-
-        try {
-
-            conn = DBInterface.connect();
-
-            stmnt = conn.prepareCall("UPDATE product SET ProdStock = ? WHERE prodID = ?");
-            stmnt.setInt(1, stock + stockToAdd);
-            stmnt.setInt(2, prodID);
-            Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Continue?");
-            conf.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    try {
-                        stmnt.execute();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
-                        new Alert(Alert.AlertType.ERROR, "Failed to Save!").show();
-                    }
-                    new Alert(Alert.AlertType.INFORMATION, "Added Stock Succesfully").show();
-
-                }
-            });
-            stmnt.close();
-            conn.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     private void deleteFromDB() {
         int prodID = selectedProd.getItmCode();
-        
+
         Connection conn;
         final PreparedStatement stmnt;
         try {
@@ -466,58 +415,64 @@ public class AdminController implements Initializable {
 
     @FXML
     private void save(ActionEvent event) {
-        if (adding || updating) {
-            Alert alrt = new Alert(Alert.AlertType.NONE, "", new ButtonType("Try Again"));
-            Boolean invalidInp = false;
-            if (txtItmName.getText().isBlank()) {
-                alrt.setContentText(alrt.getContentText() + "Missing Item Name\n");
-                invalidInp = true;
-            }
-            if (txtAuthor.getText().isBlank()) {
-                alrt.setContentText(alrt.getContentText() + "Missing Author\n");
-                invalidInp = true;
-            }
-            if (cmbCat.getValue() == null) {
-                alrt.setContentText(alrt.getContentText() + "Missing Category\n");
-                invalidInp = true;
-            }
-            if (txtDescription.getText().isBlank()) {
-                alrt.setContentText(alrt.getContentText() + "Missing Description\n");
-                invalidInp = true;
-            }
-            if (txtPrice.getText().isBlank()) {
-                alrt.setContentText(alrt.getContentText() + "Missing Price\n");
-                invalidInp = true;
-            }
-            if (txtStock.getText().isBlank()) {
-                alrt.setContentText(alrt.getContentText() + "Missing Stock\n");
-                invalidInp = true;
-            }
 
-            if (invalidInp) {
-                alrt.setTitle("Invalid Input");
-                alrt.show();
-                return;
+        try {
+            if (adding || updating) {
+                Alert alrt = new Alert(Alert.AlertType.NONE, "", new ButtonType("Try Again"));
+                Boolean invalidInp = false;
+                if (txtItmName.getText().isBlank()) {
+                    alrt.setContentText(alrt.getContentText() + "Missing Item Name\n");
+                    invalidInp = true;
+                }
+                if (txtAuthor.getText().isBlank()) {
+                    alrt.setContentText(alrt.getContentText() + "Missing Author\n");
+                    invalidInp = true;
+                }
+                if (cmbCat.getValue() == null) {
+                    alrt.setContentText(alrt.getContentText() + "Missing Category\n");
+                    invalidInp = true;
+                }
+                if (txtDescription.getText().isBlank()) {
+                    alrt.setContentText(alrt.getContentText() + "Missing Description\n");
+                    invalidInp = true;
+                }
+                if (txtPrice.getText().isBlank()) {
+                    alrt.setContentText(alrt.getContentText() + "Missing Price\n");
+                    invalidInp = true;
+                }
+                if (txtStock.getText().isBlank()) {
+                    alrt.setContentText(alrt.getContentText() + "Missing Stock\n");
+                    invalidInp = true;
+                }
+
+                if (invalidInp) {
+                    alrt.setTitle("Invalid Input");
+                    alrt.show();
+                    return;
+                }
+                //if all input field is valid add or update db
+                if (adding) {
+                    addToDB();
+                } else {
+                    updateDB();
+                }
+            } else if (addingStock) {
+                if (txtAddStock.getText().isBlank()) {
+                    Alert alrt = new Alert(Alert.AlertType.NONE, "Missing Add Stock Field", new ButtonType("Try Again"));
+                    alrt.setTitle("Invalid Input");
+                    alrt.show();
+                    return;
+                }
+                DBInterface.updateStockFromDB(selectedProd, Integer.parseInt(txtAddStock.getText()));
+
+            } else if (deleting) {
+                deleteFromDB();
             }
-            //if all input field is valid add or update db
-            if (adding) {
-                addToDB();
-            } else {
-                updateDB();
-            }
-        } else if (addingStock) {
-            if (txtAddStock.getText().isBlank()) {
-                Alert alrt = new Alert(Alert.AlertType.NONE, "Missing Add Stock Field", new ButtonType("Try Again"));
-                alrt.setTitle("Invalid Input");
-                alrt.show();
-                return;
-            }
-            addStockToDB();
-        } else if (deleting) {
-            deleteFromDB();
+            DBInterface.refreshProdList(prodList);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+            new Alert(Alert.AlertType.ERROR, "Database Error").show();
         }
-
-        refreshProdList();
         adding = false;
         updating = false;
         addingStock = false;
@@ -543,8 +498,8 @@ public class AdminController implements Initializable {
 
     @FXML
     private void Logout(ActionEvent event) {
-        new Alert(Alert.AlertType.CONFIRMATION,"Are you sure yo want to Logout?").showAndWait().ifPresent(response->{
-            if(response == ButtonType.OK){
+        new Alert(Alert.AlertType.CONFIRMATION, "Are you sure yo want to Logout?").showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
                 try {
                     App.setRoot("Landing");
                 } catch (IOException ex) {
@@ -553,7 +508,7 @@ public class AdminController implements Initializable {
                 }
             }
         });
-        
+
     }
 
 }
