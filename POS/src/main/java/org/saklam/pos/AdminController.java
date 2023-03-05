@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -463,7 +461,20 @@ public class AdminController implements Initializable {
                     alrt.show();
                     return;
                 }
-                DBInterface.updateStockFromDB(selectedProd, Integer.parseInt(txtAddStock.getText()));
+                Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Continue?");
+                conf.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        try {
+                            DBInterface.updateStockFromDB(selectedProd, Integer.parseInt(txtAddStock.getText()));
+                        } catch (SQLException ex) {
+                            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+                            new Alert(Alert.AlertType.ERROR, "Failed to Save!").show();
+                        }
+                        new Alert(Alert.AlertType.INFORMATION, "Added Stock Succesfully").show();
+
+                    }
+                });
+
 
             } else if (deleting) {
                 deleteFromDB();

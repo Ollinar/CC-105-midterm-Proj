@@ -8,9 +8,6 @@ import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -153,13 +150,27 @@ public class RegistrationController implements Initializable {
         } else {
             userTypes = "Admin";
         }
-        try {
-            //insert to db all data
-            DBInterface.insertUser(new UserModel(txtFName.getText(), txtMName.getText(), txtLName.getText(), txtEmail.getText(), txtUsername.getText(), userTypes, hashedPass));
-        } catch (SQLException ex) {
-            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
-            new Alert(Alert.AlertType.ERROR, "Error with with the SQLdatabase").show();
-        }
+        
+        UserModel userToInsert = new UserModel(txtFName.getText(), txtMName.getText(), txtLName.getText(), txtEmail.getText(), txtUsername.getText(), userTypes, hashedPass);
+        new Alert(Alert.AlertType.CONFIRMATION, "Are you sure yo want to Logout?").showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    DBInterface.insertUser(userToInsert);
+                    new Alert(Alert.AlertType.INFORMATION,"Succesfully registered").show();
+                    new Alert(Alert.AlertType.CONFIRMATION,"Do you want to continue to Login Page?").showAndWait().ifPresent(respone->{
+                        try {
+                            App.setRoot("Login");
+                        } catch (IOException ex) {
+                            new Alert(Alert.AlertType.ERROR,"Failed to load window!").show();
+                            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+                } catch (SQLException ex) {
+                    new Alert(Alert.AlertType.ERROR,"Failed to Register, SQL Exception").show();
+                    Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
     @FXML

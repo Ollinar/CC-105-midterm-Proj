@@ -3,7 +3,7 @@
  */
 
 .mainFxmlClass {
-   -fx-background-image: url(../Images/adminbg.jpg);
+    -fx-background-image: url(../Images/adminbg.jpg);
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-width: 100%;
@@ -13,25 +13,26 @@
     -fx-background-color: transparent;
     -fx-border-color:gray;
     -fx-border-radius:20px;
+    -fx-text-fill:white;
 }
 .mpane{
-   -fx-background: transparent;
+    -fx-background: transparent;
     -fx-border-color:white;
     -fx-color: #50290e;
 }
 .print {
- -fx-background-color:  #50290e;
-  -fx-border-color:white;
-   
+    -fx-background-color:  #50290e;
+    -fx-border-color:white;
+
 }
 .btns{
-   -fx-background-color: #9c5e40;
-  -fx-border-color:white;
-  
+    -fx-background-color: #9c5e40;
+    -fx-border-color:white;
+
 }
 .btn2{
     -fx-background-color: #9c5e40;
-  -fx-border-color:white;
+    -fx-border-color:white;
 }
 .tab-header-background{
     -fx-background-color:#50290e;
@@ -40,5 +41,5 @@
     -fx-background-color:#a18374;
 }
 .tot{
-    -fx-background-color: #916b54; 
+    -fx-background-color: #916b54;
 }

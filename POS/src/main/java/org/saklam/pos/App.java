@@ -19,7 +19,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("Employee"));
+        scene = new Scene(loadFXML("Landing"));
         stage.setResizable(false);
         stage.getIcons().add(new Image(App.class.getResourceAsStream("/Images/booktopia-logo-removebg-preview.png")));
         stage.setTitle("Booktopia");

@@ -8,9 +8,6 @@ import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -95,7 +92,7 @@ public class LoginController implements Initializable {
                             App.setRoot("Admin");
                         } else {
                             //give the employee window
-                            App.setRoot("User");
+                            App.setRoot("Employee");
                         }
                     } else {
                         alrt.setTitle("Login Failed");
