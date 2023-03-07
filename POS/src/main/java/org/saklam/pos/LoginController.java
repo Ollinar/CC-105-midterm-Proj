@@ -79,7 +79,7 @@ public class LoginController implements Initializable {
         try {
             dBMatched = DBInterface.validateEmail(txtEmail.getText());
             if (dBMatched != null) {
-                //if theres an email matched. tyr and see if password matched
+                //if theres an email matched. try and see if password matched
                 String hashedPass;
                     hashedPass = dBMatched.getPass();
                     Argon2 argonHasher = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, 32, 64);
@@ -97,10 +97,12 @@ public class LoginController implements Initializable {
                     } else {
                         alrt.setTitle("Login Failed");
                         alrt.setContentText("Password didn't Match");
+                        alrt.show();
                     }
             } else {
                 alrt.setTitle("Login Failed");
                 alrt.setContentText("No Such Email Registered");
+                alrt.show();
             }
         } catch (SQLException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);

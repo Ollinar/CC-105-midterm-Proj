@@ -6,27 +6,36 @@ package org.saklam.pos;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
@@ -84,15 +93,40 @@ public class AdminController implements Initializable {
     private Button btnCancel;
     @FXML
     private Button btnLogout;
+    @FXML
+    private TextField txtProdSearch;
+    @FXML
+    private TextField txtSaleSearch;
+    @FXML
+    private TableView<SalesModel> tblSale;
+    @FXML
+    private TableColumn<SalesModel, Integer> colSaleID;
+    @FXML
+    private TableColumn<SalesModel, String> colCostID;
+    @FXML
+    private TableColumn<SalesModel, String> colCosName;
+    @FXML
+    private TableColumn<SalesModel, String> colAddress;
+    @FXML
+    private TableColumn<SalesModel, String> colContact;
+    @FXML
+    private TableColumn<SalesModel, Date> colRecieved;
+    @FXML
+    private TableColumn<SalesModel, Date> colPickedUp;
+    @FXML
+    private TableColumn<SalesModel, Double> colTotal;
+
+    @FXML
+    private TableColumn<SalesModel, ArrayList<String>> colProdBought;
+    ObservableList<SalesModel> salesList = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //Setting up table
-        //collumns were already added in the table at fxml so i had to commnet this out
-        //tblProd.getColumns().addAll(colItmCode, colCat, colItmName, colAuthor, colPrice, colStock);
+
+        //Setting up prod table
         tblProd.setItems(prodList);
         colItmCode.setCellValueFactory(new PropertyValueFactory<>("itmCode"));
         colCat.setCellValueFactory(new PropertyValueFactory<>("cat"));
@@ -101,12 +135,109 @@ public class AdminController implements Initializable {
         colAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+
+        //setting put sale table
+        tblSale.setItems(salesList);
+        colSaleID.setCellValueFactory(new PropertyValueFactory<>("salesID"));
+        colCostID.setCellValueFactory(new PropertyValueFactory<>("costID"));
+        colCosName.setCellValueFactory(new PropertyValueFactory<>("costName"));
+        colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colContact.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        colRecieved.setCellValueFactory(new PropertyValueFactory<>("recived"));
+        colPickedUp.setCellValueFactory(new PropertyValueFactory<>("pickup"));
+        colProdBought.setCellValueFactory(new PropertyValueFactory<>("prodBought"));
+        //a collumn that have multiple line
+        colProdBought.setCellFactory(Col -> {
+            return new TableCell<SalesModel, ArrayList<String>>() {
+                @Override
+                protected void updateItem(ArrayList<String> item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setGraphic(null);
+                    } else {
+                        VBox vbox = new VBox();
+                        vbox.setAlignment(Pos.CENTER);
+                        item.forEach(itm -> {
+                            Label lbl = new Label(itm);
+                            vbox.getChildren().add(lbl);
+                        });
+                        setGraphic(vbox);
+                    }
+
+                }
+
+            };
+        });
+        colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+
         try {
             DBInterface.refreshProdList(prodList);
+            DBInterface.refreshSaleList(salesList);
         } catch (SQLException ex) {
             Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
             new Alert(Alert.AlertType.ERROR, "Database Error").show();
         }
+
+        FilteredList<SalesModel> saleFilter = new FilteredList<>(salesList);
+        txtSaleSearch.textProperty().addListener((obv, oldVal, newVal) -> {
+            final String keyword = newVal.toLowerCase();
+            saleFilter.setPredicate(saleModel -> {
+                if (newVal.isBlank() || newVal.isEmpty() || newVal == null) {
+                    return true;
+                }
+                //check each product bought in collumn
+                boolean prodFound= false;
+                Iterator<String> prodIt = saleModel.getProdBought().iterator();
+                while(prodIt.hasNext()){
+                    if(prodIt.next().contains(keyword)){
+                        prodFound = true;
+                        break;
+                    }
+                }
+                //check salesID,costume id, costumer name,address,contact,recieved,pickup
+                if (String.valueOf(saleModel.getSalesID()).toLowerCase().contains(keyword) ||
+                    saleModel.getCostID().toLowerCase().contains(keyword)||
+                    saleModel.getCostName().toLowerCase().contains(keyword)||
+                    saleModel.getAddress().toLowerCase().contains(keyword) ||
+                    saleModel.getContact().toLowerCase().contains(keyword) ||
+                    saleModel.getRecived().toString().toLowerCase().contains(keyword)||
+                    saleModel.getPickup().toString().toLowerCase().contains(keyword)) {
+                    return true;
+                }else{
+                    return prodFound;
+                }
+            });
+        });
+        SortedList<SalesModel> saleSorted = new SortedList<>(saleFilter);
+        saleSorted.comparatorProperty().bind(tblSale.comparatorProperty());
+        tblSale.setItems(saleSorted);
+        
+        FilteredList<Product> prodFilter = new FilteredList<>(prodList);
+        txtProdSearch.textProperty().addListener((obv, oldVal, newVal) -> {
+            final String keyword = newVal.toLowerCase();
+            prodFilter.setPredicate(prod -> {
+                
+                if(newVal.isBlank()||newVal.isEmpty()|| newVal == null){
+                    return true;
+                }else if(prod.getItmName().toLowerCase().contains(keyword)){
+                    return true;
+                }else if(String.valueOf(prod.getItmCode()).toLowerCase().contains(keyword)){
+                    return true;
+                }else if(prod.getCat().toLowerCase().contains(keyword)){
+                    return true;
+                }else if(prod.getDesc().toLowerCase().contains(keyword)){
+                    return true;
+                }else if(prod.getAuthor().toLowerCase().contains(keyword)){
+                    return true;
+                }else{
+                    return false;
+                }
+            });
+        });
+        SortedList<Product> prodSorted = new SortedList<>(prodFilter);
+        prodSorted.comparatorProperty().bind(tblProd.comparatorProperty());
+        tblProd.setItems(prodSorted);
+        
         //disable all input fields
         disableFields();
 
@@ -202,125 +333,6 @@ public class AdminController implements Initializable {
         txtDescription.setDisable(false);
         txtPrice.setDisable(false);
         txtStock.setDisable(false);
-    }
-
-    private void addToDB() {
-
-        String prodName = txtItmName.getText();
-        String author = txtAuthor.getText();
-        String category = cmbCat.getValue();
-        String desc = txtDescription.getText();
-        Double price = Double.valueOf(txtPrice.getText());
-        int stock = Integer.parseInt(txtStock.getText());
-
-        Connection conn;
-        final PreparedStatement stmnt;
-
-        try {
-
-            conn = DBInterface.connect();
-
-            stmnt = conn.prepareCall("INSERT INTO product (prodName, prodAuthor, prodCat, prodDesc, prodPrice, ProdStock)VALUES(?,?,?,?,?,?)");
-            stmnt.setString(1, prodName);
-            stmnt.setString(2, author);
-            stmnt.setString(3, category);
-            stmnt.setString(4, desc);
-            stmnt.setDouble(5, price);
-            stmnt.setInt(6, stock);
-            Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Continue?");
-            conf.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    try {
-                        stmnt.execute();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
-                        new Alert(Alert.AlertType.ERROR, "Failed to Save!").show();
-                    }
-                    new Alert(Alert.AlertType.INFORMATION, "Added Successfully").show();
-
-                }
-            });
-            stmnt.close();
-            conn.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void updateDB() {
-        int prodID = selectedProd.getItmCode();
-        String prodName = txtItmName.getText();
-        String author = txtAuthor.getText();
-        String category = cmbCat.getValue();
-        String desc = txtDescription.getText();
-        Double price = Double.valueOf(txtPrice.getText());
-        int stock = Integer.parseInt(txtStock.getText());
-
-        Connection conn;
-        final PreparedStatement stmnt;
-
-        try {
-
-            conn = DBInterface.connect();
-
-            stmnt = conn.prepareCall("UPDATE product SET prodName = ?, prodAuthor = ?, prodCat = ?, prodDesc = ?, prodPrice = ?, ProdStock = ? WHERE prodID = ?");
-            stmnt.setString(1, prodName);
-            stmnt.setString(2, author);
-            stmnt.setString(3, category);
-            stmnt.setString(4, desc);
-            stmnt.setDouble(5, price);
-            stmnt.setInt(6, stock);
-            stmnt.setInt(7, prodID);
-            Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Continue?");
-            conf.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    try {
-                        stmnt.execute();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
-                        new Alert(Alert.AlertType.ERROR, "Failed to Save!").show();
-                    }
-                    new Alert(Alert.AlertType.INFORMATION, "Updated Succesfully").show();
-
-                }
-            });
-            stmnt.close();
-            conn.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void deleteFromDB() {
-        int prodID = selectedProd.getItmCode();
-
-        Connection conn;
-        final PreparedStatement stmnt;
-        try {
-            conn = DBInterface.connect();
-            stmnt = conn.prepareCall("DELETE FROM product WHERE prodID = ?");
-            stmnt.setInt(1, prodID);
-            Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "DO YO WANT TO CONTINUE TO DELETE SELECTED ITEM?");
-            conf.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    try {
-                        stmnt.execute();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
-                        new Alert(Alert.AlertType.ERROR, "Failed to Delete!").show();
-                    }
-                    new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully Succesfully").show();
-
-                }
-            });
-            stmnt.close();
-            conn.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     Boolean adding = false;
@@ -449,10 +461,42 @@ public class AdminController implements Initializable {
                     return;
                 }
                 //if all input field is valid add or update db
+                Product prod = new Product();
+                prod.setItmName(txtItmName.getText());
+                prod.setAuthor(txtAuthor.getText());
+                prod.setCat(cmbCat.getValue());
+                prod.setDesc(txtDescription.getText());
+                prod.setPrice(Double.valueOf(txtPrice.getText()));
+                prod.setStock(Integer.parseInt(txtStock.getText()));
                 if (adding) {
-                    addToDB();
+                    Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Continue?");
+                    conf.showAndWait().ifPresent(response -> {
+                        if (response == ButtonType.OK) {
+                            try {
+                                DBInterface.addProdToDb(prod);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+                                new Alert(Alert.AlertType.ERROR, "Failed to Save!").show();
+                            }
+                            new Alert(Alert.AlertType.INFORMATION, "Added Successfully").show();
+
+                        }
+                    });
                 } else {
-                    updateDB();
+                    prod.setItmCode(selectedProd.getItmCode());
+                    Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "Continue?");
+                    conf.showAndWait().ifPresent(response -> {
+                        if (response == ButtonType.OK) {
+                            try {
+                                DBInterface.updateProdToDB(prod);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+                                new Alert(Alert.AlertType.ERROR, "Failed to Save!").show();
+                            }
+                            new Alert(Alert.AlertType.INFORMATION, "Updated Succesfully").show();
+
+                        }
+                    });
                 }
             } else if (addingStock) {
                 if (txtAddStock.getText().isBlank()) {
@@ -475,9 +519,20 @@ public class AdminController implements Initializable {
                     }
                 });
 
-
             } else if (deleting) {
-                deleteFromDB();
+                Alert conf = new Alert(Alert.AlertType.CONFIRMATION, "DO YO WANT TO CONTINUE TO DELETE SELECTED ITEM?");
+                conf.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        try {
+                            DBInterface.deleteProdFromDB(selectedProd);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
+                            new Alert(Alert.AlertType.ERROR, "Failed to Delete!").show();
+                        }
+                        new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully Succesfully").show();
+
+                    }
+                });
             }
             DBInterface.refreshProdList(prodList);
         } catch (SQLException ex) {

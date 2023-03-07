@@ -9,6 +9,7 @@ package org.saklam.pos;
  * @author Ranillo
  */
 public class Product {
+
     int itmCode;
     String cat;
     String itmName;
@@ -18,7 +19,10 @@ public class Product {
     int stock;
     int quantity;
 
-  public Product(int itmCode, String cat, String itmName, String desc, String author, Double price, int stock) {
+    public Product() {
+    }
+
+    public Product(int itmCode, String cat, String itmName, String desc, String author, Double price, int stock) {
         this.itmCode = itmCode;
         this.cat = cat;
         this.itmName = itmName;
@@ -35,7 +39,6 @@ public class Product {
         this.quantity = quantity;
     }
 
-  
     public int getQuantity() {
         return quantity;
     }
@@ -43,9 +46,7 @@ public class Product {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-  
-  
-  
+
     public String getDesc() {
         return desc;
     }
@@ -53,7 +54,7 @@ public class Product {
     public void setDesc(String desc) {
         this.desc = desc;
     }
-    
+
     public int getItmCode() {
         return itmCode;
     }
@@ -102,6 +103,4 @@ public class Product {
         this.stock = stock;
     }
 
-    
-    
 }

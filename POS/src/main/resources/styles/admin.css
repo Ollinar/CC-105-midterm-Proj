@@ -8,6 +8,12 @@
     -fx-width: 100%;
    
 }
+.search{
+    -fx-background-color: transparent;
+    -fx-border-color:gray;
+    -fx-border-radius:20px;
+    -fx-text-fill:white;
+}
 .mainFxmlClass {
    -fx-background-color: #6b3714;
 }

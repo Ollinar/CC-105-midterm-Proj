@@ -167,7 +167,10 @@ public class EmployeeController implements Initializable {
             }
             return change;
         }));
-
+        
+        //This is for the seach function. everytime the search text box, change the filter prediacte.
+        //predicate is the condition of the filter that will be used on the list
+        //the prediate will searh a match from product model, specifically product id,name,description,category,author
         FilteredList<Product> filter = new FilteredList<>(prodList);
         txtSearch.textProperty().addListener((obv,oldVal,newVal)->{
             String keyword = newVal.toLowerCase();
@@ -445,6 +448,7 @@ public class EmployeeController implements Initializable {
                         try {
                             DBInterface.updateStockFromDB(itm, (0 - itm.getQuantity()));
                         } catch (SQLException ex) {
+                            new Alert(Alert.AlertType.ERROR, "Failed to Save!").show();
                             Logger.getLogger(EmployeeController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     });
@@ -452,7 +456,7 @@ public class EmployeeController implements Initializable {
                     cart.clear();
                     clearFields();
                 } catch (SQLException ex) {
-                    new Alert(Alert.AlertType.ERROR, "Failed to Save!").show();
+                    new Alert(Alert.AlertType.ERROR, "Failed to Refresh Product List!").show();
                     Logger.getLogger(EmployeeController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 new Alert(Alert.AlertType.INFORMATION, "Added Successfully").show();

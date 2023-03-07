@@ -4,6 +4,8 @@
  */
 package org.saklam.pos;
 
+import java.sql.Array;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
@@ -12,6 +14,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import javafx.collections.ObservableList;
 import org.apache.derby.jdbc.EmbeddedDriver;
 
@@ -144,6 +149,111 @@ public class DBInterface {
         }
 
     }
+    
+    public static void refreshSaleList(ObservableList<SalesModel> saleList) throws SQLException{
+    Statement stmnt = null;
+        try {
+            conn = connect();
+
+            stmnt = conn.createStatement();
+            ResultSet result = stmnt.executeQuery("SELECT * FROM sales");
+            //clean the list and populate it again
+            saleList.clear();
+            while (result.next()) {
+                String[] temp = result.getString("prodBought").split("\\|\\|");
+                ArrayList<String> cart = new ArrayList<>();
+                Arrays.asList(temp).forEach(str ->cart.add(str));
+                saleList.add(new SalesModel(result.getInt("salesID"), result.getString("costuID"), result.getString("costuName"), result.getString("address"), result.getString("contact"), result.getDate("dateRecived"), result.getDate("datePickup"), cart, result.getDouble("totalBought")));
+            }
+        } finally {
+            if (stmnt != null) {
+                stmnt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
+
+    public static void addProdToDb(Product prod) throws SQLException {
+        String prodName = prod.getItmName();
+        String author = prod.getAuthor();
+        String category = prod.getCat();
+        String desc = prod.getDesc();
+        Double price = prod.getPrice();
+        int stock = prod.getStock();
+
+        PreparedStatement stmnt = null;
+
+        try {
+            conn = connect();
+            stmnt = conn.prepareCall("INSERT INTO product (prodName, prodAuthor, prodCat, prodDesc, prodPrice, ProdStock)VALUES(?,?,?,?,?,?)");
+            stmnt.setString(1, prodName);
+            stmnt.setString(2, author);
+            stmnt.setString(3, category);
+            stmnt.setString(4, desc);
+            stmnt.setDouble(5, price);
+            stmnt.setInt(6, stock);
+            stmnt.execute();
+        } finally {
+            if (stmnt != null) {
+                stmnt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
+
+    public static void updateProdToDB(Product prod) throws SQLException {
+        int prodID = prod.getItmCode();
+        String prodName = prod.getItmName();
+        String author = prod.getAuthor();
+        String category = prod.getCat();
+        String desc = prod.getDesc();
+        Double price = prod.getPrice();
+        int stock = prod.getStock();
+        PreparedStatement stmnt = null;
+
+        try {
+            conn = connect();
+            stmnt = conn.prepareCall("UPDATE product SET prodName = ?, prodAuthor = ?, prodCat = ?, prodDesc = ?, prodPrice = ?, ProdStock = ? WHERE prodID = ?");
+            stmnt.setString(1, prodName);
+            stmnt.setString(2, author);
+            stmnt.setString(3, category);
+            stmnt.setString(4, desc);
+            stmnt.setDouble(5, price);
+            stmnt.setInt(6, stock);
+            stmnt.setInt(7, prodID);
+            stmnt.execute();
+        } finally {
+            if (stmnt != null) {
+                stmnt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
+    }
+
+    public static void deleteProdFromDB(Product prod) throws SQLException {
+        int prodID = prod.getItmCode();
+        PreparedStatement stmnt = null;
+        try {
+            conn = connect();
+            stmnt = conn.prepareStatement("DELETE FROM product WHERE prodID = ?");
+            stmnt.setInt(1, prodID);
+            stmnt.execute();
+        } finally {
+            if (stmnt != null) {
+                stmnt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
 
     public static void updateStockFromDB(Product prod, int amnt) throws SQLException {
         int prodID = prod.getItmCode();
@@ -158,7 +268,7 @@ public class DBInterface {
             stmnt = conn.prepareCall("UPDATE product SET ProdStock = ? WHERE prodID = ?");
             stmnt.setInt(1, stock + stockToAdd);
             stmnt.setInt(2, prodID);
-            
+
             stmnt.execute();
 
         } finally {
@@ -171,12 +281,12 @@ public class DBInterface {
         }
     }
 
-    public static void addSaleToDB(SalesModel sale) throws SQLException{
+    public static void addSaleToDB(SalesModel sale) throws SQLException {
         PreparedStatement stmnt = null;
         try {
             conn = connect();
             //costuID, costuName, address , contact , dateRecived, datePickup, prodBought, totalBought
-            
+
             stmnt = conn.prepareCall("INSERT INTO sales (costuID,costuName,address,contact,dateRecived,datePickup,prodBought,totalBought) VALUES(?,?,?,?,?,?,?,?)");
             stmnt.setString(1, sale.getCostID());
             stmnt.setString(2, sale.getCostName());
@@ -185,19 +295,22 @@ public class DBInterface {
             stmnt.setDate(5, sale.getRecived());
             stmnt.setDate(6, sale.getPickup());
             String prodList = "";
-            sale.getProdBought().forEach(itm -> prodList.concat("||" + itm));
+            Iterator<String> it = sale.getProdBought().iterator();
+            while(it.hasNext()){
+                    prodList = prodList.concat(it.next()+"||");
+            }
             stmnt.setString(7, prodList);
             stmnt.setDouble(8, sale.getTotal());
             stmnt.execute();
-        
+
         } finally {
-            if(stmnt !=null){
+            if (stmnt != null) {
                 stmnt.close();
             }
-            if(conn != null){
+            if (conn != null) {
                 conn.close();
             }
         }
-        
+
     }
 }

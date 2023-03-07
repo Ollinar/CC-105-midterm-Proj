@@ -13,6 +13,9 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -68,9 +71,8 @@ public class RegistrationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-
     }
-
+    
     @FXML
     private void register(ActionEvent event) {
         Alert alrt = new Alert(Alert.AlertType.NONE, "", new ButtonType("Try Again"));
@@ -152,11 +154,10 @@ public class RegistrationController implements Initializable {
         }
         
         UserModel userToInsert = new UserModel(txtFName.getText(), txtMName.getText(), txtLName.getText(), txtEmail.getText(), txtUsername.getText(), userTypes, hashedPass);
-        new Alert(Alert.AlertType.CONFIRMATION, "Are you sure yo want to Logout?").showAndWait().ifPresent(response -> {
+        new Alert(Alert.AlertType.CONFIRMATION, "Do you want to continue to register?").showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
                     DBInterface.insertUser(userToInsert);
-                    new Alert(Alert.AlertType.INFORMATION,"Succesfully registered").show();
                     new Alert(Alert.AlertType.CONFIRMATION,"Do you want to continue to Login Page?").showAndWait().ifPresent(respone->{
                         try {
                             App.setRoot("Login");
@@ -165,6 +166,7 @@ public class RegistrationController implements Initializable {
                             Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     });
+                    new Alert(Alert.AlertType.INFORMATION,"Succesfully registered").show();
                 } catch (SQLException ex) {
                     new Alert(Alert.AlertType.ERROR,"Failed to Register, SQL Exception").show();
                     Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
@@ -185,3 +187,5 @@ public class RegistrationController implements Initializable {
     }
 
 }
+
+
