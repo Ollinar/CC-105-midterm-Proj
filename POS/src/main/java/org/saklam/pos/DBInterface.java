@@ -4,8 +4,6 @@
  */
 package org.saklam.pos;
 
-import java.sql.Array;
-import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
@@ -288,7 +286,7 @@ public class DBInterface {
             //costuID, costuName, address , contact , dateRecived, datePickup, prodBought, totalBought
 
             stmnt = conn.prepareCall("INSERT INTO sales (costuID,costuName,address,contact,dateRecived,datePickup,prodBought,totalBought) VALUES(?,?,?,?,?,?,?,?)");
-            stmnt.setString(1, sale.getCostID());
+            stmnt.setInt(1, Integer.parseInt(sale.getCostID()));
             stmnt.setString(2, sale.getCostName());
             stmnt.setString(3, sale.getAddress());
             stmnt.setString(4, sale.getContact());

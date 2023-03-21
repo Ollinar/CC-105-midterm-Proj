@@ -168,6 +168,17 @@ public class EmployeeController implements Initializable {
             return change;
         }));
         
+        txtCostID.setTextFormatter(new TextFormatter<>(change ->{
+            if (change.isAdded()){
+                if(change.getControlNewText().matches("^[0-9]{1,}")){
+                    return change;
+                }
+                return null;
+            }
+            return change;
+        }));
+        
+        
         //This is for the seach function. everytime the search text box, change the filter prediacte.
         //predicate is the condition of the filter that will be used on the list
         //the prediate will searh a match from product model, specifically product id,name,description,category,author
